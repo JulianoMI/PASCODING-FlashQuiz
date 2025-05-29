@@ -22,6 +22,7 @@ FlashQuiz is a web-based flashcard application that helps users learn and memori
 1. Clone the repository:
 ```bash
 git clone https://github.com/JulianoMI/PASCODING-FlashQuiz.git
+cd PASCODING-FlashQuiz
 ```
 
 2. Create a virtual environment:
@@ -103,6 +104,14 @@ PROJECTPAS/
 ├── README.md
 └── run.py
 ```
+
+## Contributing
+
+1. Fork the repository
+2. Create a new branch for your feature
+3. Commit your changes
+4. Push to your branch
+5. Create a Pull Request
 
 ## License
 
