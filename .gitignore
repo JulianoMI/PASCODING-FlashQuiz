@@ -1,0 +1,106 @@
+# Python and Virtual Environment
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+.env
+.venv/
+venv/
+ENV/
+env/
+
+# Flask specific
+instance/
+*.db
+*.sqlite
+*.sqlite3
+flask_session/
+
+# IDE and Editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Operating System
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+log/
+
+# Database migrations
+migrations/
+
+# Local development configuration
+config.local.py
+
+# Test cache
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Compiled files
+*.pyc
+*.pyo
+*.pyd
+*.so
+
+# Environment variables
+.env.local
+.env.development
+.env.production
+
+# Virtual Environment
+.env.local
+.env.development
+.env.production
+.env.venv
+.env.venv.local
+.env.venv.*.local
+.python-version
+
+# Flask specific
+.webassets-cache
+
+# IDE and Editor files
+.project
+.settings/
+.classpath
+*.sublime-workspace
+*.sublime-project
+
+# Operating System
+$RECYCLE.BIN/
+
+# Logs and Debugging
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test and Coverage
+.tox/
+.nox/
+.hypothesis/
+cover/
+
+# Documentation
+docs/_build/
+site/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Package Specific
+node_modules/
+bower_components/
+
+# Backup files
+*.bak
+*.swp
+*.swo
+*~ 
