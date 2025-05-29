@@ -57,16 +57,6 @@ DATABASE_URL=sqlite:///instance/flashquiz.db
 
 Replace `your-secret-key-here` with a secure secret key.
 
-## Database Setup
-
-The database will be automatically created when you first run the application, but you can manually initialize it with:
-
-```bash
-flask db init
-flask db migrate
-flask db upgrade
-```
-
 ## Running the Application
 
 1. Make sure your virtual environment is activated
@@ -105,13 +95,6 @@ PROJECTPAS/
 └── run.py
 ```
 
-## Contributing
-
-1. Fork the repository
-2. Create a new branch for your feature
-3. Commit your changes
-4. Push to your branch
-5. Create a Pull Request
 
 ## License
 
