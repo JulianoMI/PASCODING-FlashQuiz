@@ -36,7 +36,7 @@ def login():
             session['user_id'] = user.id
             session['role'] = user.role
             flash('Login successful!', 'success')
-            # Redirect based on user role
+
             if user.role == 'creator':
                 return redirect(url_for('views.decks'))
             else:
