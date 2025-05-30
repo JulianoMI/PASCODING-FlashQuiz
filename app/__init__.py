@@ -8,9 +8,9 @@ db = SQLAlchemy()
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
-    app.secret_key = 'your-secret-key-here'  # In production, use a secure secret key
+    app.secret_key = 'your-secret-key-here'  
 
-    # Ensure instance directory exists
+
     os.makedirs(os.path.join(app.root_path, '..', 'instance'), exist_ok=True)
 
     db.init_app(app)
