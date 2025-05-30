@@ -16,7 +16,7 @@ def my_progress():
     if 'user_id' not in session:
         return redirect(url_for('auth.login'))
     
-    # Get user's study history with the most recent sessions first
+
     study_history = (
         StudySession.query
         .join(FlashcardDeck)
@@ -25,7 +25,7 @@ def my_progress():
         .all()
     )
     
-    # Group sessions by deck
+
     deck_stats = {}
     for study_session in study_history:
         if study_session.deck_id not in deck_stats:
@@ -96,10 +96,10 @@ def edit_deck(deck_id):
         deck.title = request.form.get('title')
         deck.description = request.form.get('description')
         
-        # Delete existing cards
+
         Flashcard.query.filter_by(deck_id=deck.id).delete()
         
-        # Add new cards
+
         fronts = request.form.getlist('fronts[]')
         backs = request.form.getlist('backs[]')
         hints = request.form.getlist('hints[]')
@@ -128,13 +128,13 @@ def delete_deck(deck_id):
     if deck.creator_id != session['user_id']:
         return jsonify({'error': 'Forbidden'}), 403
 
-    # Delete associated study sessions first
+
     StudySession.query.filter_by(deck_id=deck_id).delete()
     
-    # Delete associated flashcards
+
     Flashcard.query.filter_by(deck_id=deck_id).delete()
     
-    # Finally delete the deck
+
     db.session.delete(deck)
     db.session.commit()
     return jsonify({'message': 'Deck deleted successfully'})
@@ -147,7 +147,7 @@ def study_deck(deck_id):
     deck = FlashcardDeck.query.get_or_404(deck_id)
     card_index = request.args.get('card', 0, type=int)
     
-    # Create or update study session
+
     session_record = StudySession.query.filter_by(
         user_id=session['user_id'],
         deck_id=deck_id,
@@ -167,7 +167,7 @@ def study_deck(deck_id):
         flash('This deck has no cards.', 'error')
         return redirect(url_for('views.decks'))
 
-    # Handle card index bounds
+
     card_index = max(0, min(card_index, len(cards) - 1))
     current_card = cards[card_index]
 
@@ -183,7 +183,7 @@ def review_card(deck_id, card_id):
     if 'user_id' not in session:
         return jsonify({'error': 'Unauthorized'}), 401
 
-    # Get or create study session
+
     study_session = StudySession.query.filter_by(
         user_id=session['user_id'],
         deck_id=deck_id,
@@ -197,7 +197,7 @@ def review_card(deck_id, card_id):
         )
         db.session.add(study_session)
     
-    # Update review count
+
     study_session.cards_reviewed += 1
     db.session.commit()
     
@@ -225,7 +225,7 @@ def explore_decks():
     if 'user_id' not in session:
         return redirect(url_for('auth.login'))
     
-    # Get all decks
+
     decks = FlashcardDeck.query.order_by(FlashcardDeck.created_at.desc()).all()
     
     return render_template('explore.html', decks=decks)
@@ -236,14 +236,14 @@ def analytics():
         flash('Only teachers can access analytics.', 'error')
         return redirect(url_for('views.decks'))
     
-    # Get overall statistics
+
     total_decks = FlashcardDeck.query.filter_by(creator_id=session['user_id']).count()
     total_cards = (Flashcard.query
                   .join(FlashcardDeck)
                   .filter(FlashcardDeck.creator_id == session['user_id'])
                   .count())
     
-    # Get unique students who studied teacher's decks
+
     student_subq = (db.session.query(StudySession.user_id)
                    .join(FlashcardDeck)
                    .filter(FlashcardDeck.creator_id == session['user_id'])
@@ -257,21 +257,21 @@ def analytics():
                      .filter(FlashcardDeck.creator_id == session['user_id'])
                      .count())
     
-    # Get deck performance data
+
     decks = FlashcardDeck.query.filter_by(creator_id=session['user_id']).all()
     for deck in decks:
-        # Calculate unique students
+
         deck.unique_students = (StudySession.query
                               .filter_by(deck_id=deck.id)
                               .distinct(StudySession.user_id)
                               .count())
         
-        # Calculate average completion rate
+
         completed_sessions = sum(1 for session in deck.study_sessions if session.completed_at)
         total_sessions = len(deck.study_sessions)
         deck.avg_completion = round((completed_sessions / total_sessions * 100) if total_sessions > 0 else 0)
     
-    # Get student progress data
+
     student_alias = aliased(User)
     students = (db.session.query(student_alias,
                                func.count(distinct(StudySession.deck_id)).label('decks_studied'),
@@ -292,7 +292,7 @@ def analytics():
             'last_active': last_active
         })
     
-    # Get recent activity
+
     recent_activity = (StudySession.query
                       .join(FlashcardDeck)
                       .join(User, User.id == StudySession.user_id)
@@ -344,12 +344,12 @@ def deck_details(deck_id):
         flash('You can only view details of your own decks.', 'error')
         return redirect(url_for('views.analytics'))
     
-    # Get detailed statistics
+
     total_sessions = len(deck.study_sessions)
     completed_sessions = sum(1 for session in deck.study_sessions if session.completed_at)
     completion_rate = round((completed_sessions / total_sessions * 100) if total_sessions > 0 else 0)
     
-    # Get student performance
+
     student_performance = (db.session.query(User,
                                           func.count(StudySession.id).label('sessions'),
                                           func.sum(case((StudySession.completed_at != None, 1), else_=0)).label('completed'))
